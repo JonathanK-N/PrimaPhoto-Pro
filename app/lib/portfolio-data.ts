@@ -123,7 +123,7 @@ export const portfolioImages: PortfolioImage[] = [
   },
   {
     id: 16,
-    src: unsplash("photo-1506634064465-9609a8e5b985"),
+    src: unsplash("photo-1554151228-14d9def656e4"),
     alt: "Portrait artistique avec ombres",
     category: "Studio",
   },

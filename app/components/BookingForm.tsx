@@ -65,31 +65,31 @@ export default function BookingForm() {
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
       <div className="sm:col-span-1">
-        <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
+        <label htmlFor="name" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Nom complet *
         </label>
-        <input required name="name" type="text" placeholder="Votre nom" className={inputClasses} />
+        <input id="name" required name="name" type="text" placeholder="Votre nom" className={inputClasses} />
       </div>
 
       <div className="sm:col-span-1">
-        <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
+        <label htmlFor="email" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Courriel *
         </label>
-        <input required name="email" type="email" placeholder="vous@exemple.com" className={inputClasses} />
+        <input id="email" required name="email" type="email" placeholder="vous@exemple.com" className={inputClasses} />
       </div>
 
       <div className="sm:col-span-1">
-        <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
+        <label htmlFor="phone" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Téléphone
         </label>
-        <input name="phone" type="tel" placeholder="(514) 555-0192" className={inputClasses} />
+        <input id="phone" name="phone" type="tel" placeholder="(514) 555-0192" className={inputClasses} />
       </div>
 
       <div className="sm:col-span-1">
-        <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
+        <label htmlFor="sessionType" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Type de séance *
         </label>
-        <select required name="sessionType" defaultValue="" className={inputClasses}>
+        <select id="sessionType" required name="sessionType" defaultValue="" className={inputClasses}>
           <option value="" disabled>
             Sélectionner
           </option>
@@ -103,24 +103,25 @@ export default function BookingForm() {
       </div>
 
       <div className="sm:col-span-1">
-        <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
+        <label htmlFor="date" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Date souhaitée
         </label>
-        <input name="date" type="date" className={inputClasses} />
+        <input id="date" name="date" type="date" className={inputClasses} />
       </div>
 
       <div className="sm:col-span-1">
-        <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
+        <label htmlFor="location" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Lieu envisagé
         </label>
-        <input name="location" type="text" placeholder="Ville, lieu..." className={inputClasses} />
+        <input id="location" name="location" type="text" placeholder="Ville, lieu..." className={inputClasses} />
       </div>
 
       <div className="sm:col-span-2">
-        <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
+        <label htmlFor="message" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Votre projet
         </label>
         <textarea
+          id="message"
           name="message"
           rows={5}
           placeholder="Parlez-nous de votre vision, vos inspirations, le nombre de personnes..."

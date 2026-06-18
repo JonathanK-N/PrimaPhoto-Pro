@@ -1,5 +1,14 @@
 export async function POST(request: Request) {
-  const data = await request.json();
+  let data: Record<string, unknown>;
+  try {
+    data = await request.json();
+  } catch {
+    return Response.json(
+      { error: "Requête invalide." },
+      { status: 400 }
+    );
+  }
+
   const { name, email, phone, sessionType, date, message } = data ?? {};
 
   if (!name || !email || !sessionType) {

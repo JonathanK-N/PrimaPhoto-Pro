@@ -35,7 +35,7 @@ export default async function PortfolioPage({
         </div>
 
         <div className="mt-16">
-          <PortfolioGrid initialCategory={initialCategory} />
+          <PortfolioGrid key={initialCategory} initialCategory={initialCategory} />
         </div>
       </div>
     </div>
