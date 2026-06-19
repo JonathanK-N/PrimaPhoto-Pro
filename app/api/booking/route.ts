@@ -1,5 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
-import { sendTelegramMessage } from "@/app/lib/telegram";
+import { sendBookingNotification } from "@/app/lib/telegram";
 
 export const dynamic = "force-dynamic";
 
@@ -66,16 +66,17 @@ export async function POST(request: Request) {
     timeStyle: "short",
   });
 
-  await sendTelegramMessage(
-    `📸 <b>Nouvelle réservation</b>\n\n` +
-      `<b>Client:</b> ${booking.name}\n` +
-      `<b>Type:</b> ${booking.sessionType}\n` +
-      `<b>Date:</b> ${formattedDate}\n` +
-      `<b>Courriel:</b> ${booking.email}\n` +
-      (booking.phone ? `<b>Téléphone:</b> ${booking.phone}\n` : "") +
-      (booking.location ? `<b>Lieu:</b> ${booking.location}\n` : "") +
-      (booking.message ? `<b>Message:</b> ${booking.message}` : "")
-  );
+  await sendBookingNotification({
+    id: booking.id,
+    name: booking.name,
+    email: booking.email,
+    phone: booking.phone,
+    sessionType: booking.sessionType,
+    location: booking.location,
+    message: booking.message,
+    formattedDate,
+    origin: new URL(request.url).origin,
+  });
 
   return Response.json({ success: true });
 }
