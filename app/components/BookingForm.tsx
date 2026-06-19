@@ -3,22 +3,32 @@
 import { useState, type FormEvent } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2, Loader2 } from "lucide-react";
-import { categories } from "../lib/portfolio-data";
+import SlotPicker from "./SlotPicker";
 
 type Status = "idle" | "loading" | "success" | "error";
 
 const inputClasses =
   "w-full rounded-sm border border-border bg-background-card px-4 py-3.5 text-sm text-foreground placeholder:text-muted focus:border-accent focus:outline-none transition-colors";
 
-export default function BookingForm() {
+export default function BookingForm({ categories }: { categories: string[] }) {
   const [status, setStatus] = useState<Status>("idle");
+  const [errorMessage, setErrorMessage] = useState("");
+  const [slotId, setSlotId] = useState("");
+  const [slotsRefreshKey, setSlotsRefreshKey] = useState(0);
 
   async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
+
+    if (!slotId) {
+      setStatus("error");
+      setErrorMessage("Veuillez choisir un créneau disponible.");
+      return;
+    }
+
     setStatus("loading");
 
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form).entries());
+    const data = { ...Object.fromEntries(new FormData(form).entries()), slotId };
 
     try {
       const res = await fetch("/api/booking", {
@@ -27,12 +37,20 @@ export default function BookingForm() {
         body: JSON.stringify(data),
       });
 
-      if (!res.ok) throw new Error("Échec de l'envoi");
+      const result = await res.json();
+
+      if (!res.ok) {
+        setSlotId("");
+        setSlotsRefreshKey((k) => k + 1);
+        throw new Error(result.error || "Échec de l'envoi");
+      }
 
       setStatus("success");
       form.reset();
-    } catch {
+      setSlotId("");
+    } catch (err) {
       setStatus("error");
+      setErrorMessage(err instanceof Error ? err.message : "Une erreur est survenue.");
     }
   }
 
@@ -48,9 +66,8 @@ export default function BookingForm() {
           Merci pour votre demande !
         </h3>
         <p className="mt-3 max-w-sm text-sm leading-relaxed text-foreground/70">
-          Nous avons bien reçu votre demande de rendez-vous. Notre équipe
-          vous contactera dans les 24 à 48 heures pour confirmer les
-          détails.
+          Votre créneau est réservé. Notre équipe vous contactera avant votre
+          séance pour confirmer les derniers détails.
         </p>
         <button
           onClick={() => setStatus("idle")}
@@ -64,6 +81,13 @@ export default function BookingForm() {
 
   return (
     <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-5 sm:grid-cols-2">
+      <div className="sm:col-span-2">
+        <label className="mb-3 block text-xs tracking-[0.3em] uppercase text-muted">
+          Choisissez un créneau *
+        </label>
+        <SlotPicker value={slotId} onChange={setSlotId} refreshKey={slotsRefreshKey} />
+      </div>
+
       <div className="sm:col-span-1">
         <label htmlFor="name" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Nom complet *
@@ -102,14 +126,7 @@ export default function BookingForm() {
         </select>
       </div>
 
-      <div className="sm:col-span-1">
-        <label htmlFor="date" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
-          Date souhaitée
-        </label>
-        <input id="date" name="date" type="date" className={inputClasses} />
-      </div>
-
-      <div className="sm:col-span-1">
+      <div className="sm:col-span-2">
         <label htmlFor="location" className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
           Lieu envisagé
         </label>
@@ -130,10 +147,7 @@ export default function BookingForm() {
       </div>
 
       {status === "error" && (
-        <p className="sm:col-span-2 text-sm text-red-400">
-          Une erreur est survenue. Veuillez réessayer ou nous écrire
-          directement à hello@primaphoto.studio.
-        </p>
+        <p className="sm:col-span-2 text-sm text-red-400">{errorMessage}</p>
       )}
 
       <div className="sm:col-span-2">

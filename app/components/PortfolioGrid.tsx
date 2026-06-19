@@ -5,24 +5,27 @@ import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Plus } from "lucide-react";
 import Lightbox from "./Lightbox";
-import { categories, portfolioImages, type Category } from "../lib/portfolio-data";
+import type { PhotoDTO } from "../lib/data";
 
 type PortfolioGridProps = {
-  initialCategory?: Category | "Tous";
+  images: PhotoDTO[];
+  categoryNames: string[];
+  initialCategory?: string;
 };
 
-const filters: (Category | "Tous")[] = ["Tous", ...categories];
-
-export default function PortfolioGrid({ initialCategory = "Tous" }: PortfolioGridProps) {
-  const [active, setActive] = useState<Category | "Tous">(initialCategory);
+export default function PortfolioGrid({
+  images: allImages,
+  categoryNames,
+  initialCategory = "Tous",
+}: PortfolioGridProps) {
+  const [active, setActive] = useState<string>(initialCategory);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
+  const filters = ["Tous", ...categoryNames];
+
   const images = useMemo(
-    () =>
-      active === "Tous"
-        ? portfolioImages
-        : portfolioImages.filter((img) => img.category === active),
-    [active]
+    () => (active === "Tous" ? allImages : allImages.filter((img) => img.category === active)),
+    [active, allImages]
   );
 
   return (
@@ -43,39 +46,42 @@ export default function PortfolioGrid({ initialCategory = "Tous" }: PortfolioGri
         ))}
       </div>
 
-      <motion.div
-        layout
-        className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3"
-      >
-        {images.map((img, i) => (
-          <motion.button
-            layout
-            key={img.id}
-            initial={{ opacity: 0, y: 24 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
-            onClick={() => setLightboxIndex(i)}
-            className={`group relative mb-4 block w-full overflow-hidden rounded-sm break-inside-avoid ${
-              i % 5 === 0 ? "aspect-[3/4]" : i % 3 === 0 ? "aspect-square" : "aspect-[4/5]"
-            }`}
-          >
-            <Image
-              src={img.src}
-              alt={img.alt}
-              fill
-              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-              className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            />
-            <div className="absolute inset-0 bg-background/0 transition-colors duration-500 group-hover:bg-background/40" />
-            <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
-              <Plus className="h-6 w-6 text-accent" strokeWidth={1.5} />
-              <span className="px-4 text-center text-xs tracking-[0.3em] uppercase text-foreground">
-                {img.category}
-              </span>
-            </div>
-          </motion.button>
-        ))}
-      </motion.div>
+      {images.length === 0 ? (
+        <p className="mt-16 text-center text-sm text-foreground/60">
+          Aucune photo dans cette catégorie pour le moment.
+        </p>
+      ) : (
+        <motion.div layout className="mt-12 columns-1 gap-4 sm:columns-2 lg:columns-3">
+          {images.map((img, i) => (
+            <motion.button
+              layout
+              key={img.id}
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: (i % 6) * 0.05 }}
+              onClick={() => setLightboxIndex(i)}
+              className={`group relative mb-4 block w-full overflow-hidden rounded-sm break-inside-avoid ${
+                i % 5 === 0 ? "aspect-[3/4]" : i % 3 === 0 ? "aspect-square" : "aspect-[4/5]"
+              }`}
+            >
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+              />
+              <div className="absolute inset-0 bg-background/0 transition-colors duration-500 group-hover:bg-background/40" />
+              <div className="absolute inset-0 flex flex-col items-center justify-center gap-3 opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                <Plus className="h-6 w-6 text-accent" strokeWidth={1.5} />
+                <span className="px-4 text-center text-xs tracking-[0.3em] uppercase text-foreground">
+                  {img.category}
+                </span>
+              </div>
+            </motion.button>
+          ))}
+        </motion.div>
+      )}
 
       <Lightbox
         images={images}

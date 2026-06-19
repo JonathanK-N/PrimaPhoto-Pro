@@ -5,8 +5,6 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowDown } from "lucide-react";
 
-const title = ["Chaque", "Instant", "Raconte", "une", "Histoire"];
-
 const container = {
   hidden: {},
   show: {
@@ -23,7 +21,15 @@ const word = {
   },
 };
 
-export default function Hero() {
+type HeroProps = {
+  kicker: string;
+  title: string;
+  subtitle: string;
+};
+
+export default function Hero({ kicker, title, subtitle }: HeroProps) {
+  const words = title.split(" ");
+
   return (
     <section className="relative flex h-svh min-h-[640px] w-full items-center justify-center overflow-hidden">
       <div className="absolute inset-0">
@@ -46,7 +52,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 0.1 }}
           className="mb-6 inline-block text-xs tracking-[0.5em] uppercase text-accent"
         >
-          Studio de Photographie Professionnel
+          {kicker}
         </motion.span>
 
         <motion.h1
@@ -55,7 +61,7 @@ export default function Hero() {
           animate="show"
           className="font-display text-5xl leading-[1.1] font-medium italic sm:text-6xl md:text-7xl lg:text-8xl"
         >
-          {title.map((w, i) => (
+          {words.map((w, i) => (
             <span key={i} className="mr-3 inline-block overflow-hidden align-bottom last:mr-0 sm:mr-4">
               <motion.span variants={word} className="inline-block">
                 {w}
@@ -70,9 +76,7 @@ export default function Hero() {
           transition={{ duration: 0.8, delay: 1.4 }}
           className="mt-8 max-w-xl text-balance text-base leading-relaxed text-foreground/75 sm:text-lg"
         >
-          Mariages, portraits, mode et événements — Prima Photo capture la
-          lumière, l&apos;émotion et le détail pour transformer vos moments en
-          œuvres intemporelles.
+          {subtitle}
         </motion.p>
 
         <motion.div

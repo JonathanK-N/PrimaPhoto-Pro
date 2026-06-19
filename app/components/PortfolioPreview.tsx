@@ -6,9 +6,9 @@ import { useState } from "react";
 import { ArrowUpRight } from "lucide-react";
 import Reveal from "./Reveal";
 import Lightbox from "./Lightbox";
-import { featuredImages } from "../lib/portfolio-data";
+import type { PhotoDTO } from "../lib/data";
 
-export default function PortfolioPreview() {
+export default function PortfolioPreview({ images: featuredImages }: { images: PhotoDTO[] }) {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (

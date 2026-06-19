@@ -4,10 +4,10 @@ import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { useEffect } from "react";
-import type { PortfolioImage } from "../lib/portfolio-data";
+import type { PhotoDTO } from "../lib/data";
 
 type LightboxProps = {
-  images: PortfolioImage[];
+  images: PhotoDTO[];
   index: number | null;
   onClose: () => void;
   onNavigate: (index: number) => void;

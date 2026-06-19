@@ -1,8 +1,11 @@
 import Image from "next/image";
 import Link from "next/link";
 import Reveal from "./Reveal";
+import { getSettings } from "@/app/lib/settings";
 
-export default function CTASection() {
+export default async function CTASection() {
+  const s = await getSettings();
+
   return (
     <section className="relative overflow-hidden py-32 lg:py-40">
       <div className="absolute inset-0">
@@ -22,11 +25,10 @@ export default function CTASection() {
             Prêt à commencer ?
           </span>
           <h2 className="mt-4 font-display text-4xl italic sm:text-5xl lg:text-6xl">
-            Écrivons le prochain chapitre de votre histoire
+            {s["cta.title"]}
           </h2>
           <p className="mx-auto mt-6 max-w-xl text-base leading-relaxed text-foreground/70">
-            Que ce soit pour un mariage, une séance portrait ou un projet de
-            marque, réservons un moment pour discuter de votre vision.
+            {s["cta.subtitle"]}
           </p>
           <Link
             href="/contact"

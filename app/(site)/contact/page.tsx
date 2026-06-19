@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { Mail, MapPin, Phone, Clock } from "lucide-react";
-import BookingForm from "../components/BookingForm";
-import Reveal from "../components/Reveal";
+import BookingForm from "@/app/components/BookingForm";
+import Reveal from "@/app/components/Reveal";
+import { getSettings } from "@/app/lib/settings";
+import { getCategoryNames } from "@/app/lib/data";
 
 export const metadata: Metadata = {
   title: "Rendez-vous | Prima Photo",
@@ -9,30 +11,16 @@ export const metadata: Metadata = {
     "Réservez votre séance photo avec Prima Photo. Mariage, portrait, mode, événementiel et plus.",
 };
 
-const infos = [
-  {
-    icon: MapPin,
-    label: "Studio",
-    value: "123 Rue de la Lumière, Montréal, QC",
-  },
-  {
-    icon: Phone,
-    label: "Téléphone",
-    value: "+1 (514) 555-0192",
-  },
-  {
-    icon: Mail,
-    label: "Courriel",
-    value: "hello@primaphoto.studio",
-  },
-  {
-    icon: Clock,
-    label: "Disponibilités",
-    value: "Lun – Sam · 9h00 – 18h00",
-  },
-];
+export default async function ContactPage() {
+  const [s, categories] = await Promise.all([getSettings(), getCategoryNames()]);
 
-export default function ContactPage() {
+  const infos = [
+    { icon: MapPin, label: "Studio", value: s["contact.address"] },
+    { icon: Phone, label: "Téléphone", value: s["contact.phone"] },
+    { icon: Mail, label: "Courriel", value: s["contact.email"] },
+    { icon: Clock, label: "Disponibilités", value: s["contact.hours"] },
+  ];
+
   return (
     <div className="bg-background pb-28 pt-36 lg:pt-44">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
@@ -44,9 +32,8 @@ export default function ContactPage() {
             Prenons Rendez-vous
           </h1>
           <p className="mt-6 text-base leading-relaxed text-foreground/70">
-            Remplissez le formulaire ci-dessous avec les détails de votre
-            projet. Nous reviendrons vers vous rapidement pour planifier
-            votre séance et donner vie à votre vision.
+            Choisissez un créneau disponible et remplissez le formulaire
+            ci-dessous. Votre rendez-vous sera confirmé instantanément.
           </p>
         </div>
 
@@ -78,7 +65,7 @@ export default function ContactPage() {
 
           <Reveal delay={0.15} className="lg:col-span-2">
             <div className="rounded-sm border border-border bg-background-soft p-6 sm:p-10">
-              <BookingForm />
+              <BookingForm categories={categories} />
             </div>
           </Reveal>
         </div>

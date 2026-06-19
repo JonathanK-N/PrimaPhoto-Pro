@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { Camera, Mail, MapPin, Phone } from "lucide-react";
 import { InstagramIcon, FacebookIcon, PinterestIcon } from "./SocialIcons";
+import { getSettings } from "@/app/lib/settings";
+import { getCategoryNames } from "@/app/lib/data";
 
 const exploreLinks = [
   { href: "/", label: "Accueil" },
@@ -10,14 +12,9 @@ const exploreLinks = [
   { href: "/contact", label: "Rendez-vous" },
 ];
 
-const categoryLinks = [
-  { href: "/portfolio?cat=Mariage", label: "Mariage" },
-  { href: "/portfolio?cat=Portrait", label: "Portrait" },
-  { href: "/portfolio?cat=Mode", label: "Mode" },
-  { href: "/portfolio?cat=Événementiel", label: "Événementiel" },
-];
+export default async function Footer() {
+  const [s, categoryNames] = await Promise.all([getSettings(), getCategoryNames()]);
 
-export default function Footer() {
   return (
     <footer className="border-t border-border bg-background-soft">
       <div className="mx-auto grid max-w-7xl grid-cols-1 gap-12 px-6 py-16 sm:grid-cols-2 lg:grid-cols-4 lg:px-10">
@@ -30,13 +27,11 @@ export default function Footer() {
             Prima<span className="text-accent">Photo</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-muted">
-            Studio de photographie professionnel. Nous capturons vos
-            instants précieux avec élégance et authenticité, pour qu&apos;ils
-            traversent le temps.
+            {s["footer.tagline"]}
           </p>
           <div className="mt-6 flex gap-4">
             <a
-              href="https://instagram.com"
+              href={s["social.instagram"]}
               target="_blank"
               rel="noreferrer"
               aria-label="Instagram"
@@ -45,7 +40,7 @@ export default function Footer() {
               <InstagramIcon className="h-4 w-4" />
             </a>
             <a
-              href="https://facebook.com"
+              href={s["social.facebook"]}
               target="_blank"
               rel="noreferrer"
               aria-label="Facebook"
@@ -54,7 +49,7 @@ export default function Footer() {
               <FacebookIcon className="h-4 w-4" />
             </a>
             <a
-              href="https://pinterest.com"
+              href={s["social.pinterest"]}
               target="_blank"
               rel="noreferrer"
               aria-label="Pinterest"
@@ -88,13 +83,13 @@ export default function Footer() {
             Catégories
           </h3>
           <ul className="mt-5 space-y-3">
-            {categoryLinks.map((link) => (
-              <li key={link.label}>
+            {categoryNames.map((name) => (
+              <li key={name}>
                 <Link
-                  href={link.href}
+                  href={`/portfolio?cat=${encodeURIComponent(name)}`}
                   className="link-underline text-sm text-foreground/70 transition-colors hover:text-foreground"
                 >
-                  {link.label}
+                  {name}
                 </Link>
               </li>
             ))}
@@ -108,15 +103,15 @@ export default function Footer() {
           <ul className="mt-5 space-y-4 text-sm text-foreground/70">
             <li className="flex items-start gap-3">
               <MapPin className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              123 Rue de la Lumière, Montréal, QC
+              {s["contact.address"]}
             </li>
             <li className="flex items-start gap-3">
               <Phone className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              +1 (514) 555-0192
+              {s["contact.phone"]}
             </li>
             <li className="flex items-start gap-3">
               <Mail className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-              hello@primaphoto.studio
+              {s["contact.email"]}
             </li>
           </ul>
         </div>

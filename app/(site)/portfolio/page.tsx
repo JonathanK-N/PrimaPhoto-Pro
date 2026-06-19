@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import PortfolioGrid from "../components/PortfolioGrid";
-import { categories, type Category } from "../lib/portfolio-data";
+import PortfolioGrid from "@/app/components/PortfolioGrid";
+import { getCategoryNames, getPhotos } from "@/app/lib/data";
 
 export const metadata: Metadata = {
   title: "Portfolio | Prima Photo",
@@ -14,9 +14,8 @@ export default async function PortfolioPage({
   searchParams: Promise<{ cat?: string }>;
 }) {
   const { cat } = await searchParams;
-  const initialCategory: Category | "Tous" = categories.includes(cat as Category)
-    ? (cat as Category)
-    : "Tous";
+  const [categoryNames, images] = await Promise.all([getCategoryNames(), getPhotos()]);
+  const initialCategory = cat && categoryNames.includes(cat) ? cat : "Tous";
 
   return (
     <div className="bg-background pb-28 pt-36 lg:pt-44">
@@ -35,7 +34,12 @@ export default async function PortfolioPage({
         </div>
 
         <div className="mt-16">
-          <PortfolioGrid key={initialCategory} initialCategory={initialCategory} />
+          <PortfolioGrid
+            key={initialCategory}
+            images={images}
+            categoryNames={categoryNames}
+            initialCategory={initialCategory}
+          />
         </div>
       </div>
     </div>

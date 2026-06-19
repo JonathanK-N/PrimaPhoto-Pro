@@ -1,14 +1,17 @@
 import Image from "next/image";
 import Reveal from "./Reveal";
+import { getSettings } from "@/app/lib/settings";
 
-const stats = [
-  { value: "12+", label: "Années d'expérience" },
-  { value: "850+", label: "Séances réalisées" },
-  { value: "300+", label: "Clients comblés" },
-  { value: "15", label: "Prix & distinctions" },
-];
+export default async function StorySection() {
+  const s = await getSettings();
 
-export default function StorySection() {
+  const stats = [
+    { value: s["story.stat1Value"], label: s["story.stat1Label"] },
+    { value: s["story.stat2Value"], label: s["story.stat2Label"] },
+    { value: s["story.stat3Value"], label: s["story.stat3Label"] },
+    { value: s["story.stat4Value"], label: s["story.stat4Label"] },
+  ];
+
   return (
     <section id="histoire" className="relative overflow-hidden bg-background py-28 lg:py-36">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2 lg:gap-24 lg:px-10">
@@ -23,9 +26,9 @@ export default function StorySection() {
             />
           </div>
           <div className="absolute -bottom-8 -right-6 hidden w-48 rounded-sm border border-accent/40 bg-background-soft p-6 shadow-2xl sm:-right-10 sm:block">
-            <p className="font-display text-3xl italic text-accent">Depuis 2013</p>
+            <p className="font-display text-3xl italic text-accent">{s["story.founded"]}</p>
             <p className="mt-1 text-xs tracking-widest uppercase text-muted">
-              Studio basé à Montréal
+              {s["story.location"]}
             </p>
           </div>
         </Reveal>
@@ -33,30 +36,18 @@ export default function StorySection() {
         <div>
           <Reveal>
             <span className="text-xs tracking-[0.5em] uppercase text-accent">
-              Notre Histoire
+              {s["story.kicker"]}
             </span>
           </Reveal>
           <Reveal delay={0.1}>
             <h2 className="mt-4 font-display text-4xl leading-tight italic sm:text-5xl lg:text-6xl">
-              L&apos;art de figer
-              <br />
-              l&apos;émotion dans le temps
+              {s["story.title"]}
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
             <div className="mt-8 space-y-5 text-base leading-relaxed text-foreground/70">
-              <p>
-                Tout a commencé par une vieille pellicule argentique et une
-                fascination pour la lumière. Aujourd&apos;hui, Prima Photo est
-                devenu un studio reconnu, où chaque séance est pensée comme un
-                chapitre d&apos;une histoire plus grande : la vôtre.
-              </p>
-              <p>
-                Notre approche mêle élégance intemporelle et regard moderne.
-                Nous ne photographions pas seulement des visages ou des
-                lieux — nous racontons des récits, capturons des regards
-                fugaces et révélons la beauté brute de chaque instant.
-              </p>
+              <p>{s["story.paragraph1"]}</p>
+              <p>{s["story.paragraph2"]}</p>
             </div>
           </Reveal>
 
