@@ -1,9 +1,8 @@
-import { Trash2 } from "lucide-react";
 import { prisma } from "@/app/lib/prisma";
 import UploadPhotoForm from "./UploadPhotoForm";
 import CreateCategoryForm from "./CreateCategoryForm";
 import PhotoCard from "./PhotoCard";
-import { deleteCategory } from "./actions";
+import DeleteCategoryButton from "./DeleteCategoryButton";
 
 export default async function AdminPhotosPage() {
   const categories = await prisma.category.findMany({
@@ -35,23 +34,7 @@ export default async function AdminPhotosPage() {
                 {category.name}{" "}
                 <span className="text-sm text-muted">({category.photos.length})</span>
               </h2>
-              <form
-                action={deleteCategory}
-                onSubmit={(e) => {
-                  if (!confirm(`Supprimer la catégorie "${category.name}" et toutes ses photos ?`)) {
-                    e.preventDefault();
-                  }
-                }}
-              >
-                <input type="hidden" name="id" value={category.id} />
-                <button
-                  type="submit"
-                  className="flex items-center gap-2 text-xs tracking-widest uppercase text-muted transition-colors hover:text-red-400"
-                >
-                  <Trash2 className="h-3.5 w-3.5" />
-                  Supprimer la catégorie
-                </button>
-              </form>
+              <DeleteCategoryButton id={category.id} name={category.name} />
             </div>
 
             {category.photos.length === 0 ? (
