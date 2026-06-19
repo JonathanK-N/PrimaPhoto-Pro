@@ -1,46 +1,29 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { Quote, Star } from "lucide-react";
+import { Quote, Star, PenLine } from "lucide-react";
 import Reveal from "./Reveal";
 
-const testimonials = [
-  {
-    name: "Marie-Ève Tremblay",
-    role: "Mariage — Domaine Lavande",
-    quote:
-      "Prima Photo a su capter l'émotion brute de notre mariage. Chaque photo raconte une partie de notre histoire. Un travail d'une élégance rare.",
-  },
-  {
-    name: "Antoine Bélanger",
-    role: "Portrait Corporate",
-    quote:
-      "Une approche professionnelle et un œil artistique impressionnant. Les portraits ont totalement transformé l'image de notre entreprise.",
-  },
-  {
-    name: "Sofia Marchetti",
-    role: "Shooting Mode & Éditorial",
-    quote:
-      "Une direction artistique impeccable, une ambiance détendue sur le plateau et un résultat final à couper le souffle. Je recommande sans hésiter.",
-  },
-  {
-    name: "Julien Roy",
-    role: "Lancement de Produit",
-    quote:
-      "Réactivité, créativité et sens du détail. Les photos de notre événement ont dépassé toutes nos attentes et ont fait sensation sur nos réseaux.",
-  },
-];
+type Testimonial = {
+  id: string;
+  name: string;
+  role: string | null;
+  quote: string;
+  rating: number;
+};
 
-export default function Testimonials() {
+export default function Testimonials({ testimonials }: { testimonials: Testimonial[] }) {
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
+    if (testimonials.length === 0) return;
     const timer = setInterval(() => {
       setIndex((i) => (i + 1) % testimonials.length);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [testimonials.length]);
 
   return (
     <section id="temoignages" className="relative overflow-hidden bg-background-soft py-28 lg:py-36">
@@ -54,47 +37,65 @@ export default function Testimonials() {
           </h2>
         </Reveal>
 
-        <div className="relative mt-16 flex min-h-[280px] flex-col items-center justify-center sm:min-h-[240px]">
-          <Quote className="mb-6 h-10 w-10 text-accent" strokeWidth={1.25} />
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 16 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -16 }}
-              transition={{ duration: 0.6, ease: "easeOut" }}
-              className="flex flex-col items-center"
-            >
-              <p className="font-display text-xl italic leading-relaxed sm:text-2xl lg:text-3xl">
-                &ldquo;{testimonials[index].quote}&rdquo;
-              </p>
-              <div className="mt-8 flex items-center gap-1 text-accent">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} className="h-4 w-4 fill-accent" />
-                ))}
-              </div>
-              <p className="mt-4 text-sm tracking-widest uppercase">
-                {testimonials[index].name}
-              </p>
-              <p className="mt-1 text-xs tracking-widest uppercase text-muted">
-                {testimonials[index].role}
-              </p>
-            </motion.div>
-          </AnimatePresence>
-        </div>
+        {testimonials.length === 0 ? (
+          <p className="mt-12 text-base text-foreground/70">
+            Soyez le premier à partager votre expérience avec Prima Photo.
+          </p>
+        ) : (
+          <>
+            <div className="relative mt-16 flex min-h-[280px] flex-col items-center justify-center sm:min-h-[240px]">
+              <Quote className="mb-6 h-10 w-10 text-accent" strokeWidth={1.25} />
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={testimonials[index].id}
+                  initial={{ opacity: 0, y: 16 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -16 }}
+                  transition={{ duration: 0.6, ease: "easeOut" }}
+                  className="flex flex-col items-center"
+                >
+                  <p className="font-display text-xl italic leading-relaxed sm:text-2xl lg:text-3xl">
+                    &ldquo;{testimonials[index].quote}&rdquo;
+                  </p>
+                  <div className="mt-8 flex items-center gap-1 text-accent">
+                    {Array.from({ length: testimonials[index].rating }).map((_, i) => (
+                      <Star key={i} className="h-4 w-4 fill-accent" />
+                    ))}
+                  </div>
+                  <p className="mt-4 text-sm tracking-widest uppercase">
+                    {testimonials[index].name}
+                  </p>
+                  {testimonials[index].role && (
+                    <p className="mt-1 text-xs tracking-widest uppercase text-muted">
+                      {testimonials[index].role}
+                    </p>
+                  )}
+                </motion.div>
+              </AnimatePresence>
+            </div>
 
-        <div className="mt-10 flex justify-center gap-3">
-          {testimonials.map((t, i) => (
-            <button
-              key={t.name}
-              aria-label={`Témoignage de ${t.name}`}
-              onClick={() => setIndex(i)}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                i === index ? "w-8 bg-accent" : "w-1.5 bg-border"
-              }`}
-            />
-          ))}
-        </div>
+            <div className="mt-10 flex justify-center gap-3">
+              {testimonials.map((t, i) => (
+                <button
+                  key={t.id}
+                  aria-label={`Témoignage de ${t.name}`}
+                  onClick={() => setIndex(i)}
+                  className={`h-1.5 rounded-full transition-all duration-500 ${
+                    i === index ? "w-8 bg-accent" : "w-1.5 bg-border"
+                  }`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        <Link
+          href="/avis"
+          className="mt-12 inline-flex items-center gap-2 rounded-full border border-accent px-6 py-2.5 text-xs tracking-[0.3em] uppercase text-accent transition-colors hover:bg-accent hover:text-background"
+        >
+          <PenLine className="h-3.5 w-3.5" />
+          Laisser un avis
+        </Link>
       </div>
     </section>
   );

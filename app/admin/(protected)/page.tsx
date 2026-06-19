@@ -1,9 +1,9 @@
 import Link from "next/link";
-import { Images, CalendarRange, BookOpenCheck, FolderTree } from "lucide-react";
+import { Images, CalendarRange, BookOpenCheck, FolderTree, Star } from "lucide-react";
 import { prisma } from "@/app/lib/prisma";
 
 export default async function AdminDashboardPage() {
-  const [photoCount, categoryCount, upcomingSlots, bookings] = await Promise.all([
+  const [photoCount, categoryCount, upcomingSlots, bookings, pendingTestimonials] = await Promise.all([
     prisma.photo.count(),
     prisma.category.count(),
     prisma.availabilitySlot.count({ where: { isBooked: false, start: { gte: new Date() } } }),
@@ -13,6 +13,7 @@ export default async function AdminDashboardPage() {
       orderBy: { slot: { start: "asc" } },
       take: 5,
     }),
+    prisma.testimonial.count({ where: { status: "PENDING" } }),
   ]);
 
   const stats = [
@@ -20,6 +21,7 @@ export default async function AdminDashboardPage() {
     { label: "Catégories", value: categoryCount, href: "/admin/photos", icon: FolderTree },
     { label: "Créneaux disponibles", value: upcomingSlots, href: "/admin/calendar", icon: CalendarRange },
     { label: "Réservations confirmées", value: bookings.length, href: "/admin/bookings", icon: BookOpenCheck },
+    { label: "Avis en attente", value: pendingTestimonials, href: "/admin/testimonials", icon: Star },
   ];
 
   return (
@@ -29,7 +31,7 @@ export default async function AdminDashboardPage() {
         Vue d&apos;ensemble de votre studio Prima Photo.
       </p>
 
-      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
         {stats.map((stat) => (
           <Link
             key={stat.label}

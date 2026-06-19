@@ -80,6 +80,43 @@ async function seedPhotosFn() {
   console.log("Photos de démonstration créées.");
 }
 
+const seedTestimonials = [
+  {
+    name: "Marie-Ève Tremblay",
+    role: "Mariage — Domaine Lavande",
+    quote:
+      "Prima Photo a su capter l'émotion brute de notre mariage. Chaque photo raconte une partie de notre histoire. Un travail d'une élégance rare.",
+  },
+  {
+    name: "Antoine Bélanger",
+    role: "Portrait Corporate",
+    quote:
+      "Une approche professionnelle et un œil artistique impressionnant. Les portraits ont totalement transformé l'image de notre entreprise.",
+  },
+  {
+    name: "Sofia Marchetti",
+    role: "Shooting Mode & Éditorial",
+    quote:
+      "Une direction artistique impeccable, une ambiance détendue sur le plateau et un résultat final à couper le souffle. Je recommande sans hésiter.",
+  },
+  {
+    name: "Julien Roy",
+    role: "Lancement de Produit",
+    quote:
+      "Réactivité, créativité et sens du détail. Les photos de notre événement ont dépassé toutes nos attentes et ont fait sensation sur nos réseaux.",
+  },
+];
+
+async function seedTestimonialsFn() {
+  const count = await prisma.testimonial.count();
+  if (count > 0) return;
+
+  await prisma.testimonial.createMany({
+    data: seedTestimonials.map((t) => ({ ...t, status: "APPROVED" })),
+  });
+  console.log("Témoignages de démonstration créés.");
+}
+
 async function seedSettings() {
   const existing = await prisma.siteSetting.findMany({ select: { key: true } });
   const existingKeys = new Set(existing.map((e) => e.key));
@@ -96,6 +133,7 @@ async function main() {
   await seedAdmin();
   await seedCategories();
   await seedPhotosFn();
+  await seedTestimonialsFn();
   await seedSettings();
 }
 

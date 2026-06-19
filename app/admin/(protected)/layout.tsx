@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Camera, LayoutDashboard, Images, FileText, CalendarRange, BookOpenCheck, LogOut } from "lucide-react";
+import { Camera, LayoutDashboard, Images, FileText, CalendarRange, BookOpenCheck, Star, LogOut } from "lucide-react";
 import { requireAdmin } from "@/app/lib/session";
 import { logout } from "@/app/admin/actions";
 
@@ -9,6 +9,7 @@ const navLinks = [
   { href: "/admin/content", label: "Contenu du site", icon: FileText },
   { href: "/admin/calendar", label: "Calendrier", icon: CalendarRange },
   { href: "/admin/bookings", label: "Réservations", icon: BookOpenCheck },
+  { href: "/admin/testimonials", label: "Avis", icon: Star },
 ];
 
 export default async function AdminProtectedLayout({

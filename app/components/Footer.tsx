@@ -9,6 +9,7 @@ const exploreLinks = [
   { href: "/#histoire", label: "Notre histoire" },
   { href: "/#services", label: "Services" },
   { href: "/portfolio", label: "Portfolio" },
+  { href: "/avis", label: "Avis clients" },
   { href: "/contact", label: "Rendez-vous" },
 ];
 

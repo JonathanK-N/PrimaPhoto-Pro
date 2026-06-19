@@ -63,3 +63,13 @@ model Booking {
   slot        AvailabilitySlot @relation(fields: [slotId], references: [id], onDelete: Cascade)
   createdAt   DateTime         @default(now())
 }
+
+model Testimonial {
+  id        String   @id @default(cuid())
+  name      String
+  role      String?
+  quote     String
+  rating    Int      @default(5)
+  status    String   @default("PENDING")
+  createdAt DateTime @default(now())
+}

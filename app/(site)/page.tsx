@@ -5,10 +5,14 @@ import PortfolioPreview from "@/app/components/PortfolioPreview";
 import Testimonials from "@/app/components/Testimonials";
 import CTASection from "@/app/components/CTASection";
 import { getSettings } from "@/app/lib/settings";
-import { getFeaturedPhotos } from "@/app/lib/data";
+import { getFeaturedPhotos, getApprovedTestimonials } from "@/app/lib/data";
 
 export default async function Home() {
-  const [settings, featuredPhotos] = await Promise.all([getSettings(), getFeaturedPhotos()]);
+  const [settings, featuredPhotos, testimonials] = await Promise.all([
+    getSettings(),
+    getFeaturedPhotos(),
+    getApprovedTestimonials(),
+  ]);
 
   return (
     <>
@@ -20,7 +24,7 @@ export default async function Home() {
       <StorySection />
       <ServicesSection />
       <PortfolioPreview images={featuredPhotos} />
-      <Testimonials />
+      <Testimonials testimonials={testimonials} />
       <CTASection />
     </>
   );

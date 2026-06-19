@@ -48,3 +48,10 @@ export async function getFeaturedPhotos(limit = 4): Promise<PhotoDTO[]> {
     category: p.category.name,
   }));
 }
+
+export async function getApprovedTestimonials() {
+  return prisma.testimonial.findMany({
+    where: { status: "APPROVED" },
+    orderBy: { createdAt: "desc" },
+  });
+}
