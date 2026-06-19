@@ -119,9 +119,22 @@ export default async function Footer() {
       </div>
 
       <div className="border-t border-border">
-        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 px-6 py-6 text-xs tracking-widest text-muted sm:flex-row lg:px-10">
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 text-center text-xs tracking-widest text-muted sm:flex-row sm:text-left lg:px-10">
           <p>© {new Date().getFullYear()} PRIMA PHOTO. TOUS DROITS RÉSERVÉS.</p>
-          <p>CONÇU AVEC SOIN POUR RACONTER VOTRE HISTOIRE.</p>
+          <div className="flex flex-col items-center gap-1 sm:items-end">
+            <p>CONÇU AVEC SOIN POUR RACONTER VOTRE HISTOIRE.</p>
+            <p>
+              PROPULSÉ PAR{" "}
+              <a
+                href="https://cognito-inc.ca"
+                target="_blank"
+                rel="noreferrer"
+                className="link-underline text-foreground/80 transition-colors hover:text-accent"
+              >
+                COGNITO INC.
+              </a>
+            </p>
+          </div>
         </div>
       </div>
     </footer>
