@@ -1,5 +1,6 @@
 import { prisma } from "@/app/lib/prisma";
 import { sendBookingNotification } from "@/app/lib/telegram";
+import { getSiteUrl } from "@/app/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -75,7 +76,7 @@ export async function POST(request: Request) {
     location: booking.location,
     message: booking.message,
     formattedDate,
-    origin: new URL(request.url).origin,
+    origin: getSiteUrl(new URL(request.url).origin),
   });
 
   return Response.json({ success: true });

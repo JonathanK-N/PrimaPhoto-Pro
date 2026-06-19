@@ -1,4 +1,5 @@
 import { prisma } from "@/app/lib/prisma";
+import { getSiteUrl } from "@/app/lib/site";
 
 export const dynamic = "force-dynamic";
 
@@ -7,9 +8,10 @@ function buildMailto(to: string, subject: string, body: string) {
 }
 
 export async function GET(request: Request) {
-  const { searchParams, origin } = new URL(request.url);
-  const bookingId = searchParams.get("bookingId");
-  const action = searchParams.get("action");
+  const url = new URL(request.url);
+  const origin = getSiteUrl(url.origin);
+  const bookingId = url.searchParams.get("bookingId");
+  const action = url.searchParams.get("action");
 
   if (!bookingId || (action !== "confirm" && action !== "cancel")) {
     return new Response("Requête invalide.", { status: 400 });
@@ -52,8 +54,30 @@ export async function GET(request: Request) {
       `Encore désolé pour ce désagrément, et au plaisir de vous accueillir prochainement.\n\nL'équipe Prima Photo`;
   }
 
-  return new Response(null, {
-    status: 302,
-    headers: { Location: buildMailto(booking.email, subject, body) },
+  const mailto = buildMailto(booking.email, subject, body);
+  const safeMailto = mailto.replace(/&/g, "&amp;").replace(/"/g, "&quot;");
+
+  const html = `<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta http-equiv="refresh" content="0;url=${safeMailto}" />
+  <title>Ouverture de votre messagerie…</title>
+</head>
+<body style="margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;background:#0a0a0a;color:#f5f3ee;font-family:system-ui,sans-serif;text-align:center;padding:24px;">
+  <div>
+    <p style="margin-bottom:16px;">Ouverture de votre messagerie...</p>
+    <p style="margin-bottom:16px;font-size:14px;color:#9a9892;">Si rien ne se passe automatiquement :</p>
+    <a href="${safeMailto}" style="display:inline-block;padding:14px 28px;border-radius:999px;background:#c9a961;color:#0a0a0a;text-decoration:none;font-weight:600;">
+      Rédiger le courriel
+    </a>
+  </div>
+</body>
+</html>`;
+
+  return new Response(html, {
+    status: 200,
+    headers: { "Content-Type": "text/html; charset=utf-8" },
   });
 }
