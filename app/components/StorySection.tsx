@@ -13,7 +13,7 @@ export default async function StorySection() {
   ];
 
   return (
-    <section id="histoire" className="relative overflow-hidden bg-background py-28 lg:py-36">
+    <section id="histoire" className="relative overflow-hidden bg-black py-28 lg:py-36">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2 lg:gap-24 lg:px-10">
         <Reveal className="relative">
           <div className="relative aspect-[4/5] w-full overflow-hidden rounded-sm">
@@ -25,9 +25,9 @@ export default async function StorySection() {
               className="object-cover grayscale"
             />
           </div>
-          <div className="absolute -bottom-8 -right-6 hidden w-48 rounded-sm border border-accent/40 bg-background-soft p-6 shadow-2xl sm:-right-10 sm:block">
-            <p className="font-display text-3xl italic text-accent">{s["story.founded"]}</p>
-            <p className="mt-1 text-xs tracking-widest uppercase text-muted">
+          <div className="absolute -bottom-8 -right-6 hidden w-48 rounded-sm border border-white/10 bg-black p-6 shadow-2xl sm:-right-10 sm:block">
+            <p className="font-display text-3xl italic text-white">{s["story.founded"]}</p>
+            <p className="mt-1 text-xs tracking-widest uppercase text-white/50">
               {s["story.location"]}
             </p>
           </div>
@@ -35,7 +35,7 @@ export default async function StorySection() {
 
         <div>
           <Reveal>
-            <span className="text-xs tracking-[0.5em] uppercase text-accent">
+            <span className="text-xs tracking-[0.5em] uppercase text-white/50">
               {s["story.kicker"]}
             </span>
           </Reveal>
@@ -45,20 +45,20 @@ export default async function StorySection() {
             </h2>
           </Reveal>
           <Reveal delay={0.2}>
-            <div className="mt-8 space-y-5 text-base leading-relaxed text-foreground/70">
+            <div className="mt-8 space-y-5 text-base leading-relaxed text-white/60">
               <p>{s["story.paragraph1"]}</p>
               <p>{s["story.paragraph2"]}</p>
             </div>
           </Reveal>
 
           <Reveal delay={0.3}>
-            <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-8 border-t border-border pt-10 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
+            <div className="mt-12 grid grid-cols-2 gap-x-8 gap-y-8 border-t border-white/10 pt-10 sm:grid-cols-4 lg:grid-cols-2 xl:grid-cols-4">
               {stats.map((stat) => (
                 <div key={stat.label}>
-                  <p className="font-display text-3xl text-accent sm:text-4xl">
+                  <p className="font-display text-3xl text-white sm:text-4xl">
                     {stat.value}
                   </p>
-                  <p className="mt-1 text-xs tracking-widest uppercase text-muted">
+                  <p className="mt-1 text-xs tracking-widest uppercase text-white/50">
                     {stat.label}
                   </p>
                 </div>

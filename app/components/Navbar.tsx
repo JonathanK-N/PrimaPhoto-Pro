@@ -26,16 +26,14 @@ export default function Navbar() {
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
-    return () => {
-      document.body.style.overflow = "";
-    };
+    return () => { document.body.style.overflow = ""; };
   }, [open]);
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
         scrolled
-          ? "bg-background/80 backdrop-blur-md border-b border-border py-3"
+          ? "bg-black/90 backdrop-blur-lg border-b border-white/5 py-3"
           : "bg-transparent py-6"
       }`}
     >
@@ -45,8 +43,8 @@ export default function Navbar() {
           className="flex items-center gap-2 font-display text-xl tracking-[0.2em] uppercase"
           onClick={() => setOpen(false)}
         >
-          <Camera className="h-5 w-5 text-accent" strokeWidth={1.5} />
-          Prima<span className="text-accent">Photo</span>
+          <Camera className="h-5 w-5 text-white" strokeWidth={1.5} />
+          Prima<span className="text-white">Photo</span>
         </Link>
 
         <div className="hidden items-center gap-10 lg:flex">
@@ -54,7 +52,7 @@ export default function Navbar() {
             <Link
               key={link.href}
               href={link.href}
-              className="link-underline text-sm tracking-widest uppercase text-foreground/80 transition-colors hover:text-foreground"
+              className="link-underline text-sm tracking-widest uppercase text-white/60 transition-colors duration-300 hover:text-white"
             >
               {link.label}
             </Link>
@@ -63,7 +61,7 @@ export default function Navbar() {
 
         <Link
           href="/contact"
-          className="hidden rounded-full border border-accent px-6 py-2.5 text-sm tracking-widest uppercase text-accent transition-colors duration-300 hover:bg-accent hover:text-background lg:inline-block"
+          className="hidden rounded-full border border-white/30 px-6 py-2.5 text-sm tracking-widest uppercase text-white transition-all duration-500 hover:bg-white hover:text-black lg:inline-block"
         >
           Prendre rendez-vous
         </Link>
@@ -71,7 +69,7 @@ export default function Navbar() {
         <button
           aria-label="Menu"
           onClick={() => setOpen((v) => !v)}
-          className="text-foreground lg:hidden"
+          className="text-white lg:hidden"
         >
           {open ? <X className="h-7 w-7" /> : <Menu className="h-7 w-7" />}
         </button>
@@ -83,15 +81,15 @@ export default function Navbar() {
             initial={{ opacity: 0, y: -16 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -16 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-border bg-background/95 px-6 pb-8 pt-4 backdrop-blur-md lg:hidden"
+            transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-x-0 top-full flex flex-col gap-1 border-b border-white/5 bg-black/95 px-6 pb-8 pt-4 backdrop-blur-lg lg:hidden"
           >
             {navLinks.map((link) => (
               <Link
                 key={link.href}
                 href={link.href}
                 onClick={() => setOpen(false)}
-                className="border-b border-border/50 py-4 text-base tracking-widest uppercase text-foreground/80 transition-colors hover:text-accent"
+                className="border-b border-white/5 py-4 text-base tracking-widest uppercase text-white/60 transition-colors hover:text-white"
               >
                 {link.label}
               </Link>
@@ -99,7 +97,7 @@ export default function Navbar() {
             <Link
               href="/contact"
               onClick={() => setOpen(false)}
-              className="mt-6 rounded-full border border-accent px-6 py-3 text-center text-sm tracking-widest uppercase text-accent transition-colors duration-300 hover:bg-accent hover:text-background"
+              className="mt-6 rounded-full border border-white/30 px-6 py-3 text-center text-sm tracking-widest uppercase text-white transition-all duration-500 hover:bg-white hover:text-black"
             >
               Prendre rendez-vous
             </Link>

@@ -53,8 +53,8 @@ export async function sendBookingNotification(booking: BookingNotification) {
     (booking.location ? `<b>Lieu :</b> ${booking.location}\n` : "") +
     (booking.message ? `<b>Message :</b> ${booking.message}\n` : "");
 
-  const mailLink = (action: "confirm" | "cancel") =>
-    `${booking.origin}/api/telegram/mail?bookingId=${booking.id}&action=${action}`;
+  const notifyLink = (action: "confirm" | "cancel" | "review") =>
+    `${booking.origin}/api/telegram/notify?bookingId=${booking.id}&action=${action}`;
 
   await callTelegramApi("sendMessage", {
     chat_id: chatId,
@@ -63,8 +63,11 @@ export async function sendBookingNotification(booking: BookingNotification) {
     reply_markup: {
       inline_keyboard: [
         [
-          { text: "✅ Confirmer", url: mailLink("confirm") },
-          { text: "❌ Annuler", url: mailLink("cancel") },
+          { text: "✅ Confirmer", url: notifyLink("confirm") },
+          { text: "❌ Annuler", url: notifyLink("cancel") },
+        ],
+        [
+          { text: "⭐ Demander un avis", url: notifyLink("review") },
         ],
       ],
     },

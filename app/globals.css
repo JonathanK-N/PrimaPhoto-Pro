@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --background-soft: #121212;
-  --background-card: #161614;
-  --foreground: #f5f3ee;
-  --muted: #9a9892;
-  --border: #2a2924;
-  --accent: #c9a961;
-  --accent-soft: #e8d9b5;
+  --background: #000000;
+  --background-soft: #0a0a0a;
+  --background-card: #111111;
+  --foreground: #ffffff;
+  --muted: #777777;
+  --border: #222222;
+  --accent: #ffffff;
+  --accent-soft: #cccccc;
 }
 
 @theme inline {
@@ -39,23 +39,23 @@ body {
 }
 
 ::selection {
-  background: var(--accent);
+  background: var(--foreground);
   color: var(--background);
 }
 
 /* Thin elegant scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--background);
 }
 ::-webkit-scrollbar-thumb {
   background: var(--border);
-  border-radius: 4px;
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--accent);
+  background: var(--muted);
 }
 
 /* Reusable luxury underline animation for links */
@@ -69,9 +69,53 @@ body {
   bottom: -2px;
   width: 0;
   height: 1px;
-  background: var(--accent);
-  transition: width 0.35s ease;
+  background: var(--foreground);
+  transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1);
 }
 .link-underline:hover::after {
   width: 100%;
+}
+
+/* Smooth page transitions */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+main {
+  animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+/* Magnetic hover effect for buttons */
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+}
+.btn-primary::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--foreground);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+.btn-primary:hover::before {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+.btn-primary > * {
+  position: relative;
+  z-index: 1;
+}
+
+/* Image reveal on scroll */
+@keyframes imageReveal {
+  from { clip-path: inset(100% 0 0 0); }
+  to { clip-path: inset(0 0 0 0); }
+}
+
+.reveal-image {
+  animation: imageReveal 1.2s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
