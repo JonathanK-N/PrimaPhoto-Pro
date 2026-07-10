@@ -47,6 +47,7 @@ export default function SlotPicker({ value, onChange, refreshKey }: SlotPickerPr
       weekday: "long",
       day: "numeric",
       month: "long",
+      timeZone: "America/Montreal",
     });
     groups.set(dateKey, [...(groups.get(dateKey) ?? []), slot]);
   }
@@ -71,6 +72,7 @@ export default function SlotPicker({ value, onChange, refreshKey }: SlotPickerPr
                 {new Date(slot.start).toLocaleTimeString("fr-CA", {
                   hour: "2-digit",
                   minute: "2-digit",
+                  timeZone: "America/Montreal",
                 })}
               </button>
             ))}

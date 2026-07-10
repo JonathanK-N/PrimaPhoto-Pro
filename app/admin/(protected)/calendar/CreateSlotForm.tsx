@@ -1,10 +1,17 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { Loader2, Plus, ChevronLeft, ChevronRight, CheckCircle2 } from "lucide-react";
+import { Loader2, Plus, ChevronLeft, ChevronRight, CheckCircle2, X } from "lucide-react";
 import { createSlots } from "./actions";
 
 const DAYS = ["Lun", "Mar", "Mer", "Jeu", "Ven", "Sam", "Dim"];
+
+const TIME_OPTIONS = [
+  "08:00", "08:30", "09:00", "09:30", "10:00", "10:30",
+  "11:00", "11:30", "12:00", "12:30", "13:00", "13:30",
+  "14:00", "14:30", "15:00", "15:30", "16:00", "16:30",
+  "17:00", "17:30", "18:00", "18:30", "19:00", "19:30", "20:00",
+];
 
 function pad(n: number) {
   return n.toString().padStart(2, "0");
@@ -19,8 +26,8 @@ export default function CreateSlotForm() {
     const now = new Date();
     return new Date(now.getFullYear(), now.getMonth(), 1);
   });
-  const [selected, setSelected] = useState<Set<string>>(new Set());
-  const [time, setTime] = useState("10:00");
+  const [selectedDays, setSelectedDays] = useState<Set<string>>(new Set());
+  const [selectedTimes, setSelectedTimes] = useState<Set<string>>(new Set());
   const [duration, setDuration] = useState(90);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -28,18 +35,27 @@ export default function CreateSlotForm() {
 
   const today = toDateStr(new Date());
 
-  // Build calendar grid
   const year = month.getFullYear();
   const mo = month.getMonth();
   const firstDay = new Date(year, mo, 1).getDay();
-  const offset = (firstDay + 6) % 7; // Monday-based
+  const offset = (firstDay + 6) % 7;
   const daysInMonth = new Date(year, mo + 1, 0).getDate();
 
   function toggleDay(dateStr: string) {
-    setSelected((prev) => {
+    setSelectedDays((prev) => {
       const next = new Set(prev);
       if (next.has(dateStr)) next.delete(dateStr);
       else next.add(dateStr);
+      return next;
+    });
+    setSuccess(false);
+  }
+
+  function toggleTime(time: string) {
+    setSelectedTimes((prev) => {
+      const next = new Set(prev);
+      if (next.has(time)) next.delete(time);
+      else next.add(time);
       return next;
     });
     setSuccess(false);
@@ -49,15 +65,22 @@ export default function CreateSlotForm() {
     setError("");
     setSuccess(false);
     startTransition(async () => {
-      const result = await createSlots(Array.from(selected).sort(), time, duration);
+      const result = await createSlots(
+        Array.from(selectedDays).sort(),
+        Array.from(selectedTimes).sort(),
+        duration
+      );
       if (result?.error) {
         setError(result.error);
       } else {
         setSuccess(true);
-        setSelected(new Set());
+        setSelectedDays(new Set());
+        setSelectedTimes(new Set());
       }
     });
   }
+
+  const totalSlots = selectedDays.size * selectedTimes.size;
 
   return (
     <div className="space-y-6">
@@ -98,7 +121,7 @@ export default function CreateSlotForm() {
           const day = i + 1;
           const dateStr = `${year}-${pad(mo + 1)}-${pad(day)}`;
           const isPast = dateStr < today;
-          const isSelected = selected.has(dateStr);
+          const isSelected = selectedDays.has(dateStr);
 
           return (
             <button
@@ -120,22 +143,43 @@ export default function CreateSlotForm() {
         })}
       </div>
 
-      {/* Time & duration */}
+      {/* Time selection */}
+      <div className="border-t border-border pt-6">
+        <label className="mb-3 block text-xs tracking-[0.3em] uppercase text-muted">
+          Heures (sélectionnez une ou plusieurs)
+        </label>
+        <div className="flex flex-wrap gap-2">
+          {TIME_OPTIONS.map((t) => (
+            <button
+              key={t}
+              type="button"
+              onClick={() => toggleTime(t)}
+              className={`rounded-full border px-3 py-1.5 text-xs tracking-wider transition-colors ${
+                selectedTimes.has(t)
+                  ? "border-accent bg-accent text-background font-medium"
+                  : "border-border text-foreground/70 hover:border-accent hover:text-accent"
+              }`}
+            >
+              {t}
+            </button>
+          ))}
+        </div>
+        {selectedTimes.size > 0 && (
+          <button
+            type="button"
+            onClick={() => setSelectedTimes(new Set())}
+            className="mt-2 flex items-center gap-1 text-xs text-muted hover:text-accent"
+          >
+            <X className="h-3 w-3" /> Tout désélectionner
+          </button>
+        )}
+      </div>
+
+      {/* Duration & submit */}
       <div className="flex flex-wrap items-end gap-4 border-t border-border pt-6">
         <div>
           <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
-            Heure
-          </label>
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            className="rounded-sm border border-border bg-background-card px-4 py-2.5 text-sm text-foreground focus:border-accent focus:outline-none"
-          />
-        </div>
-        <div>
-          <label className="mb-2 block text-xs tracking-[0.3em] uppercase text-muted">
-            Durée
+            Durée par créneau
           </label>
           <select
             value={duration}
@@ -151,17 +195,18 @@ export default function CreateSlotForm() {
         <button
           type="button"
           onClick={handleSubmit}
-          disabled={pending || selected.size === 0}
+          disabled={pending || selectedDays.size === 0 || selectedTimes.size === 0}
           className="flex items-center gap-2 rounded-full bg-accent px-6 py-2.5 text-xs tracking-[0.3em] uppercase text-background transition-transform duration-300 hover:scale-[1.02] disabled:opacity-60"
         >
           {pending ? <Loader2 className="h-4 w-4 animate-spin" /> : <Plus className="h-4 w-4" />}
-          Ajouter {selected.size > 1 ? `${selected.size} créneaux` : "le créneau"}
+          Ajouter {totalSlots > 1 ? `${totalSlots} créneaux` : "le créneau"}
         </button>
       </div>
 
-      {selected.size > 0 && (
+      {/* Summary */}
+      {totalSlots > 0 && (
         <p className="text-xs text-muted">
-          {selected.size} jour{selected.size > 1 ? "s" : ""} sélectionné{selected.size > 1 ? "s" : ""} · {time} · {duration} min
+          {selectedDays.size} jour{selectedDays.size > 1 ? "s" : ""} × {selectedTimes.size} heure{selectedTimes.size > 1 ? "s" : ""} = {totalSlots} créneau{totalSlots > 1 ? "x" : ""} · {duration} min chacun
         </p>
       )}
 

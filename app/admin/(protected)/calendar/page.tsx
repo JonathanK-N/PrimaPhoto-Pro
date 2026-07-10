@@ -38,6 +38,7 @@ export default async function AdminCalendarPage() {
                   {new Date(slot.start).toLocaleString("fr-CA", {
                     dateStyle: "full",
                     timeStyle: "short",
+                    timeZone: "America/Montreal",
                   })}
                 </p>
                 <p className="text-xs text-muted">
