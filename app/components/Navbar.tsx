@@ -44,7 +44,7 @@ export default function Navbar() {
           onClick={() => setOpen(false)}
         >
           <Camera className="h-5 w-5 text-white" strokeWidth={1.5} />
-          Pr<span className="lowercase">i</span>ma<span className="text-white">Photo</span>
+          Pr<span className="lowercase inline-block" style={{margin: '0 -0.05em'}}>i</span>ma<span className="text-white">Photo</span>
         </Link>
 
         <div className="hidden items-center gap-10 lg:flex">

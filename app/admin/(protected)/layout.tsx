@@ -29,7 +29,7 @@ export default async function AdminProtectedLayout({
             className="flex items-center gap-2 font-display text-lg tracking-[0.2em] uppercase"
           >
             <Camera className="h-5 w-5 text-accent" strokeWidth={1.5} />
-            Pr<span className="lowercase">i</span>ma<span className="text-accent">Photo</span>
+            Pr<span className="lowercase inline-block" style={{margin: '0 -0.05em'}}>i</span>ma<span className="text-accent">Photo</span>
             <span className="ml-2 text-xs tracking-widest text-muted">ADMIN</span>
           </Link>
 

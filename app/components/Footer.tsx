@@ -25,7 +25,7 @@ export default async function Footer() {
             className="flex items-center gap-2 font-display text-xl tracking-[0.2em] uppercase"
           >
             <Camera className="h-5 w-5 text-white" strokeWidth={1.5} />
-            Pr<span className="lowercase">i</span>ma<span className="text-white">Photo</span>
+            Pr<span className="lowercase inline-block" style={{margin: '0 -0.05em'}}>i</span>ma<span className="text-white">Photo</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/50">
             {s["footer.tagline"]}
@@ -120,7 +120,7 @@ export default async function Footer() {
 
       <div className="border-t border-white/5">
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-2 px-6 py-6 text-center text-xs tracking-widest text-white/30 sm:flex-row sm:text-left lg:px-10">
-          <p>© {new Date().getFullYear()} PRiMA PHOTO. TOUS DROITS RÉSERVÉS.</p>
+          <p>© {new Date().getFullYear()} PR<span className="lowercase">i</span>MA PHOTO. TOUS DROITS RÉSERVÉS.</p>
           <div className="flex flex-col items-center gap-1 sm:items-end">
             <p>CONÇU AVEC SOIN POUR RACONTER VOTRE HISTOIRE.</p>
             <p>
