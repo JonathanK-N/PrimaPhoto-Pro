@@ -12,11 +12,11 @@ export default function PortfolioPreview({ images: featuredImages }: { images: P
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   return (
-    <section id="portfolio" className="bg-background py-28 lg:py-36">
+    <section id="portfolio" className="bg-black py-28 lg:py-36">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="flex flex-col items-end justify-between gap-6 sm:flex-row">
           <div>
-            <span className="text-xs tracking-[0.5em] uppercase text-accent">
+            <span className="text-xs tracking-[0.5em] uppercase text-white/50">
               Portfolio
             </span>
             <h2 className="mt-4 font-display text-4xl italic sm:text-5xl lg:text-6xl">
@@ -25,7 +25,7 @@ export default function PortfolioPreview({ images: featuredImages }: { images: P
           </div>
           <Link
             href="/portfolio"
-            className="group inline-flex shrink-0 items-center gap-2 text-sm tracking-[0.3em] uppercase text-foreground/80 transition-colors hover:text-accent"
+            className="group inline-flex shrink-0 items-center gap-2 text-sm tracking-[0.3em] uppercase text-white/60 transition-colors hover:text-white"
           >
             Voir tout
             <ArrowUpRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1 group-hover:-translate-y-1" />
@@ -36,7 +36,7 @@ export default function PortfolioPreview({ images: featuredImages }: { images: P
           {featuredImages.map((img, i) => (
             <Reveal
               key={img.id}
-              delay={i * 0.08}
+              delay={i * 0.1}
               className={i === 0 ? "col-span-2 row-span-2" : ""}
             >
               <button
@@ -50,10 +50,10 @@ export default function PortfolioPreview({ images: featuredImages }: { images: P
                   alt={img.alt}
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"
-                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+                  className="object-cover transition-all duration-700 ease-out group-hover:scale-105"
                 />
-                <div className="absolute inset-0 bg-background/0 transition-colors duration-500 group-hover:bg-background/40" />
-                <span className="absolute bottom-4 left-4 text-xs tracking-[0.3em] uppercase text-foreground opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/40" />
+                <span className="absolute bottom-4 left-4 text-xs tracking-[0.3em] uppercase text-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">
                   {img.category}
                 </span>
               </button>

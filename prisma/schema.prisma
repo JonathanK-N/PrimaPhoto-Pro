@@ -73,3 +73,13 @@ model Testimonial {
   status    String   @default("PENDING")
   createdAt DateTime @default(now())
 }
+
+model HeroImage {
+  id        String   @id @default(cuid())
+  url       String
+  publicId  String?
+  alt       String
+  active    Boolean  @default(false)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}

@@ -22,10 +22,19 @@ export async function uploadPhoto(_state: { error?: string } | undefined, formDa
   if (!alt) return { error: "Veuillez décrire l'image (texte alternatif)." };
   if (!categoryId) return { error: "Veuillez choisir une catégorie." };
 
+  // Parse crop data if provided
+  const cropX = formData.get("cropX");
+  const cropY = formData.get("cropY");
+  const cropW = formData.get("cropW");
+  const cropH = formData.get("cropH");
+  const crop = cropX && cropY && cropW && cropH
+    ? { x: Number(cropX), y: Number(cropY), width: Number(cropW), height: Number(cropH) }
+    : undefined;
+
   const buffer = Buffer.from(await file.arrayBuffer());
 
   try {
-    const { url, publicId } = await uploadImage(buffer, file.type, alt);
+    const { url, publicId } = await uploadImage(buffer, file.type, alt, crop);
     const count = await prisma.photo.count({ where: { categoryId } });
 
     await prisma.photo.create({

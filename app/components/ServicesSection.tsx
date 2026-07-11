@@ -52,36 +52,36 @@ export default function ServicesSection() {
     <section id="services" className="bg-background-soft py-28 lg:py-36">
       <div className="mx-auto max-w-7xl px-6 lg:px-10">
         <Reveal className="mx-auto max-w-2xl text-center">
-          <span className="text-xs tracking-[0.5em] uppercase text-accent">
+          <span className="text-xs tracking-[0.5em] uppercase text-white/50">
             Ce que nous offrons
           </span>
           <h2 className="mt-4 font-display text-4xl italic sm:text-5xl lg:text-6xl">
             Nos Services
           </h2>
-          <p className="mt-6 text-base leading-relaxed text-foreground/70">
+          <p className="mt-6 text-base leading-relaxed text-white/60">
             Chaque projet est unique. Découvrez nos domaines d&apos;expertise,
             pensés pour s&apos;adapter à votre univers et à votre histoire.
           </p>
         </Reveal>
 
-        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-border bg-border sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-sm border border-white/10 bg-white/5 sm:grid-cols-2 lg:grid-cols-3">
           {services.map((service, i) => (
             <Reveal key={service.title} delay={(i % 3) * 0.1}>
               <Link
                 href={`/portfolio?cat=${encodeURIComponent(service.category)}`}
-                className="group relative flex h-full flex-col bg-background-card p-8 transition-colors duration-500 hover:bg-background lg:p-10"
+                className="group relative flex h-full flex-col bg-black p-8 transition-all duration-700 hover:bg-white/[0.03] lg:p-10"
               >
                 <service.icon
-                  className="h-8 w-8 text-accent transition-transform duration-500 group-hover:scale-110"
-                  strokeWidth={1.25}
+                  className="h-8 w-8 text-white transition-transform duration-700 group-hover:scale-110"
+                  strokeWidth={1}
                 />
                 <h3 className="mt-6 font-display text-2xl italic">
                   {service.title}
                 </h3>
-                <p className="mt-3 text-sm leading-relaxed text-foreground/60">
+                <p className="mt-3 text-sm leading-relaxed text-white/50">
                   {service.description}
                 </p>
-                <span className="mt-6 inline-flex items-center text-xs tracking-[0.3em] uppercase text-accent opacity-0 transition-opacity duration-500 group-hover:opacity-100">
+                <span className="mt-6 inline-flex items-center text-xs tracking-[0.3em] uppercase text-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-x-1">
                   Découvrir →
                 </span>
               </Link>
