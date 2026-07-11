@@ -1,10 +1,11 @@
 import Link from "next/link";
-import { Camera, LayoutDashboard, Images, FileText, CalendarRange, BookOpenCheck, Star, LogOut } from "lucide-react";
+import { Camera, LayoutDashboard, Images, FileText, CalendarRange, BookOpenCheck, Star, LogOut, ImageIcon } from "lucide-react";
 import { requireAdmin } from "@/app/lib/session";
 import { logout } from "@/app/admin/actions";
 
 const navLinks = [
   { href: "/admin", label: "Tableau de bord", icon: LayoutDashboard },
+  { href: "/admin/hero", label: "Hero", icon: ImageIcon },
   { href: "/admin/photos", label: "Photos", icon: Images },
   { href: "/admin/content", label: "Contenu du site", icon: FileText },
   { href: "/admin/calendar", label: "Calendrier", icon: CalendarRange },

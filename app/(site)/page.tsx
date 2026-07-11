@@ -5,13 +5,14 @@ import PortfolioPreview from "@/app/components/PortfolioPreview";
 import Testimonials from "@/app/components/Testimonials";
 import CTASection from "@/app/components/CTASection";
 import { getSettings } from "@/app/lib/settings";
-import { getFeaturedPhotos, getApprovedTestimonials } from "@/app/lib/data";
+import { getFeaturedPhotos, getApprovedTestimonials, getActiveHeroImage } from "@/app/lib/data";
 
 export default async function Home() {
-  const [settings, featuredPhotos, testimonials] = await Promise.all([
+  const [settings, featuredPhotos, testimonials, heroImage] = await Promise.all([
     getSettings(),
     getFeaturedPhotos(),
     getApprovedTestimonials(),
+    getActiveHeroImage(),
   ]);
 
   return (
@@ -20,6 +21,7 @@ export default async function Home() {
         kicker={settings["hero.kicker"]}
         title={settings["hero.title"]}
         subtitle={settings["hero.subtitle"]}
+        backgroundImage={heroImage?.url}
       />
       <StorySection />
       <ServicesSection />

@@ -60,9 +60,7 @@ export default function PortfolioGrid({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: (i % 6) * 0.06 }}
               onClick={() => setLightboxIndex(i)}
-              className={`group relative mb-4 block w-full overflow-hidden rounded-sm break-inside-avoid ${
-                i % 5 === 0 ? "aspect-[3/4]" : i % 3 === 0 ? "aspect-square" : "aspect-[4/5]"
-              }`}
+              className={`group relative mb-4 block w-full overflow-hidden rounded-sm break-inside-avoid aspect-[4/5]`}
             >
               <Image
                 src={img.src}

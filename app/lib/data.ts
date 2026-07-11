@@ -55,3 +55,7 @@ export async function getApprovedTestimonials() {
     orderBy: { createdAt: "desc" },
   });
 }
+
+export async function getActiveHeroImage() {
+  return prisma.heroImage.findFirst({ where: { active: true } });
+}

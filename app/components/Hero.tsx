@@ -26,9 +26,12 @@ type HeroProps = {
   kicker: string;
   title: string;
   subtitle: string;
+  backgroundImage?: string;
 };
 
-export default function Hero({ kicker, title, subtitle }: HeroProps) {
+const DEFAULT_HERO = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2400&auto=format&fit=crop";
+
+export default function Hero({ kicker, title, subtitle, backgroundImage }: HeroProps) {
   const words = title.split(" ");
   const ref = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({
@@ -45,7 +48,7 @@ export default function Hero({ kicker, title, subtitle }: HeroProps) {
     >
       <motion.div className="absolute inset-0" style={{ y: imageY }}>
         <Image
-          src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=2400&auto=format&fit=crop"
+          src={backgroundImage || DEFAULT_HERO}
           alt="Photographie artistique"
           fill
           priority
