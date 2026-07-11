@@ -25,7 +25,7 @@ export default async function Footer() {
             className="flex items-center gap-2 font-display text-xl tracking-[0.2em] uppercase"
           >
             <Camera className="h-5 w-5 text-white" strokeWidth={1.5} />
-            Pr<span className="lowercase inline-block" style={{margin: '0 -0.05em'}}>i</span>ma<span className="text-white">Photo</span>
+            Pr<span className="lowercase inline-block" style={{letterSpacing: '0', margin: '0 -0.12em'}}>i</span>ma<span className="text-white">Photo</span>
           </Link>
           <p className="mt-4 max-w-xs text-sm leading-relaxed text-white/50">
             {s["footer.tagline"]}
