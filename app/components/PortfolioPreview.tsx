@@ -50,7 +50,7 @@ export default function PortfolioPreview({ images: featuredImages }: { images: P
                   alt={img.alt}
                   fill
                   sizes="(max-width: 640px) 50vw, 25vw"
-                  className="object-cover grayscale transition-all duration-700 ease-out group-hover:scale-105 group-hover:grayscale-0"
+                  className="object-cover transition-all duration-700 ease-out group-hover:scale-105"
                 />
                 <div className="absolute inset-0 bg-black/0 transition-colors duration-500 group-hover:bg-black/40" />
                 <span className="absolute bottom-4 left-4 text-xs tracking-[0.3em] uppercase text-white opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:translate-y-0 translate-y-2">

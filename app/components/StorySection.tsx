@@ -22,7 +22,7 @@ export default async function StorySection() {
               alt="Le photographe de Prima Photo au travail"
               fill
               sizes="(max-width: 1024px) 100vw, 50vw"
-              className="object-cover grayscale"
+              className="object-cover"
             />
           </div>
           <div className="absolute -bottom-8 -right-6 hidden w-48 rounded-sm border border-white/10 bg-black p-6 shadow-2xl sm:-right-10 sm:block">

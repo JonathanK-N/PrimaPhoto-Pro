@@ -14,7 +14,7 @@ export default async function CTASection() {
           alt="Paysage de montagne au lever du soleil"
           fill
           sizes="100vw"
-          className="object-cover grayscale"
+          className="object-cover"
         />
         <div className="absolute inset-0 bg-black/85" />
       </div>
